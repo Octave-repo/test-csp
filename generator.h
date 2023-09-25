@@ -1,18 +1,7 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-
-/*Structure d'un couple de valeur*/
-typedef struct _couple {
-    int a;
-    int b;
-} Couple; 
+#include "headers.h"
 
 /*Retourne la taille du tableau de valeur des contraintes */
 int val_per_constraints(int nb_val, int durete);

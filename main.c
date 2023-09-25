@@ -1,4 +1,5 @@
 #include "generator.h"
+#include "backtrack.h"
 
 int main (int argc, char **argv)
 {
@@ -8,7 +9,8 @@ int main (int argc, char **argv)
     int nb_val; // Nombre de valeurs
     int densite; //Densité
     int durete; //Dureté
-    Couple ***solution;
+    Couple ***csp;
+    int *solution;
 
     if (argc < 6)
     {
@@ -27,11 +29,24 @@ int main (int argc, char **argv)
         ,nb_var, nb_val, densite, durete);
 
     /* TEST BLOCK*/
-    solution = generate_csp(nb_var, nb_val, densite, durete);
-
+    //solution = backtrack(nb_var, nb_val, durete, csp);
     int max_nb_val  = val_per_constraints(nb_val, durete);
-    afficher_contraintes(nb_var, solution, max_nb_val);
-    free_csp(nb_var, solution);   
+    //afficher_contraintes(nb_var, csp, max_nb_val);   
+
+    for (int i = 0 ; i < quantite ; i ++)
+    {
+        csp = generate_csp(nb_var, nb_val, densite, durete);
+        solution = backtrack(nb_var, nb_val, durete, csp);
+        if (solution != NULL)
+            free(solution);
+        free_csp(nb_var, csp);
+    }
+        
+    
+    /*print_solution(solution, nb_var);
+    if (solution != NULL)
+        free(solution);
+    free_csp(nb_var, csp); */
     /* END BLOCK*/
     return 0;
 }
