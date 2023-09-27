@@ -31,16 +31,22 @@ int main (int argc, char **argv)
     /* TEST BLOCK*/
     //solution = backtrack(nb_var, nb_val, durete, csp);
     int max_nb_val  = val_per_constraints(nb_val, durete);
-    //afficher_contraintes(nb_var, csp, max_nb_val);   
+    csp = generate_csp(nb_var, nb_val, densite, durete);
+    //afficher_contraintes(nb_var, csp, max_nb_val);
+    solution = backtrack(nb_var, nb_val, durete, csp);
+    print_solution(solution, nb_var);
+    if (solution != NULL)
+        free(solution);
+    free_csp(nb_var, csp);   
 
-    for (int i = 0 ; i < quantite ; i ++)
+    /*for (int i = 0 ; i < quantite ; i ++)
     {
         csp = generate_csp(nb_var, nb_val, densite, durete);
         solution = backtrack(nb_var, nb_val, durete, csp);
         if (solution != NULL)
             free(solution);
         free_csp(nb_var, csp);
-    }
+    }*/
         
     
     /*print_solution(solution, nb_var);

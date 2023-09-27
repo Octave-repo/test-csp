@@ -67,8 +67,10 @@ int backtrack_recursive(int nb_var, int nb_val, int durete, Couple ***csp, int *
         if (coherence_check(current_var, nb_var, solution, size, csp))
         {
             //On apelle récursivement la suite
-            return backtrack_recursive(nb_var, nb_val, durete, csp, solution, current_var + 1);
+            if (backtrack_recursive(nb_var, nb_val, durete, csp, solution, current_var + 1))
+                return 1;
         }
+         solution[current_var] = -1;
     }
     return 0;
 }
