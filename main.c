@@ -1,4 +1,5 @@
 #include "generator.h"
+#include "backjumping.h"
 #include "backtrack.h"
 
 int main (int argc, char **argv)
@@ -33,20 +34,21 @@ int main (int argc, char **argv)
     int max_nb_val  = val_per_constraints(nb_val, durete);
     csp = generate_csp(nb_var, nb_val, densite, durete);
     //afficher_contraintes(nb_var, csp, max_nb_val);
-    solution = backtrack(nb_var, nb_val, durete, csp);
+    /*solution = backjump(nb_var, nb_val, durete, csp);
     print_solution(solution, nb_var);
     if (solution != NULL)
         free(solution);
-    free_csp(nb_var, csp);   
+    free_csp(nb_var, csp); */  
 
-    /*for (int i = 0 ; i < quantite ; i ++)
+    for (int i = 0 ; i < quantite ; i ++)
     {
         csp = generate_csp(nb_var, nb_val, densite, durete);
-        solution = backtrack(nb_var, nb_val, durete, csp);
+        solution = timed_backjump(nb_var, nb_val, durete, csp);
+        print_solution(solution, nb_var);
         if (solution != NULL)
             free(solution);
         free_csp(nb_var, csp);
-    }*/
+    }
         
     
     /*print_solution(solution, nb_var);
