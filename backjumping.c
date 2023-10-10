@@ -37,7 +37,11 @@ int coherence_check_last_issue(int n, int nb_var, int *solution, int size, Coupl
 int *backjump(int nb_var, int nb_val, int durete, Couple ***csp)
 {
     int block = 0;
-    int size = val_per_constraints(nb_val, durete);
+    int size;
+    if (durete <= -1)
+        size = nb_var * nb_var;
+    else
+        val_per_constraints(nb_val, durete);
     int ok;
     int i = 0;
     int *solution = malloc(nb_var * sizeof(int));

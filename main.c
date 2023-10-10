@@ -36,6 +36,8 @@ int main (int argc, char **argv)
     display_queen(csp, nb_var);
     solution = backtrack(nb_var, nb_val, -1, csp);
     print_solution(solution, nb_var);
+    solution = timed_backjump(nb_var, nb_val, -1, csp);
+    print_solution(solution, nb_var);
     if (solution != NULL)
         free(solution);
     free_csp(nb_var, csp);    
