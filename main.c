@@ -1,6 +1,7 @@
 #include "generator.h"
 #include "backjumping.h"
 #include "backtrack.h"
+#include "nqueen.h"
 
 int main (int argc, char **argv)
 {
@@ -30,15 +31,15 @@ int main (int argc, char **argv)
         ,nb_var, nb_val, densite, durete);
 
     /* TEST BLOCK*/
-    //solution = backtrack(nb_var, nb_val, durete, csp);
-    //afficher_contraintes(nb_var, csp, max_nb_val);
-    /*solution = backjump(nb_var, nb_val, durete, csp);
+    csp = generate_queen(nb_var);
+    printf("Affichage du CSP\n");
+    display_queen(csp, nb_var);
+    solution = backtrack(nb_var, nb_val, -1, csp);
     print_solution(solution, nb_var);
     if (solution != NULL)
         free(solution);
-    free_csp(nb_var, csp); */  
-
-    for (int i = 0 ; i < quantite ; i ++)
+    free_csp(nb_var, csp);    
+    /*for (int i = 0 ; i < quantite ; i ++)
     {
         csp = generate_csp(nb_var, nb_val, densite, durete);
         
@@ -54,7 +55,7 @@ int main (int argc, char **argv)
             free(solution);
         free_csp(nb_var, csp);
         printf("----------------------\n");
-    }
+    }*/
         
     
     /*print_solution(solution, nb_var);

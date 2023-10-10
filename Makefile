@@ -2,7 +2,7 @@ CC = gcc
 #CFLAGS = -Wall -Wextra -g
 TARGET = csp
 
-SRCS = main.c generator.c backtrack.c backjumping.c
+SRCS = main.c generator.c backtrack.c backjumping.c nqueen.c
 
 OBJS = $(SRCS:.c=.o)
 
