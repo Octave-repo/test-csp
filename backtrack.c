@@ -50,7 +50,12 @@ int coherence_check(int n, int nb_var, int *solution, int size, Couple ***csp)
 int backtrack_recursive(int nb_var, int nb_val, int durete, Couple ***csp, int *solution, int current_var)
 {
     //Taille du tableau de contrainte
-    int size = val_per_constraints(nb_val, durete);
+    //+ sécurité pour n reine
+    int size;
+    if (durete >= 0)
+        size = val_per_constraints(nb_val, durete);
+    else
+        size = nb_var *nb_var;
 
     //Si on a atteint la fin du tableau
     if (current_var >= nb_var)
