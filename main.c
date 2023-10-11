@@ -32,11 +32,13 @@ int main (int argc, char **argv)
 
     /* TEST BLOCK*/
     csp = generate_queen(nb_var);
-    printf("Affichage du CSP\n");
-    display_queen(csp, nb_var);
-    solution = backtrack(nb_var, nb_val, -1, csp);
+    //printf("Affichage du CSP\n");
+    //display_queen(csp, nb_var);
+    solution = backtrack(nb_var, nb_var, -1, csp);
     print_solution(solution, nb_var);
-    solution = timed_backjump(nb_var, nb_val, -1, csp);
+    if (solution != NULL)
+        free(solution);
+    solution = timed_backjump(nb_var, nb_var, -1, csp);
     print_solution(solution, nb_var);
     if (solution != NULL)
         free(solution);
@@ -57,7 +59,7 @@ int main (int argc, char **argv)
             free(solution);
         free_csp(nb_var, csp);
         printf("----------------------\n");
-    }*/
+    }*:
         
     
     /*print_solution(solution, nb_var);

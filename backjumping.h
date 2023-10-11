@@ -2,7 +2,10 @@
 #define BACKJUMPING_H
 
 #include "headers.h"
-int coherence_check_last_issue(int n, int nb_var, int *solution, int size, Couple ***csp, int *block);
+int **create_parents(int nb_var, Couple ***csp);
+int closest_parent(int *parent, int nb_var);
+void free_parents(int **parents, int size);
+void merge_arrays(int *source, int *destination, int size, int n);
 int *backjump(int nb_var, int nb_val, int durete, Couple ***csp);
 int *timed_backjump(int nb_var, int nb_val, int durete, Couple ***csp);
 #endif
