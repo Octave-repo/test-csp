@@ -2,6 +2,7 @@
 #include "backjumping.h"
 #include "backtrack.h"
 #include "nqueen.h"
+#include "forwardchecking.h"
 
 int main (int argc, char **argv)
 {
@@ -34,7 +35,8 @@ int main (int argc, char **argv)
     csp = generate_queen(nb_var);
     //printf("Affichage du CSP\n");
     //display_queen(csp, nb_var);
-    solution = backtrack(nb_var, nb_var, -1, csp);
+    solution = forwardcheck(nb_var, nb_var, -1, csp);
+    printf("Solution:\n");
     print_solution(solution, nb_var);
     if (solution != NULL)
         free(solution);

@@ -108,17 +108,17 @@ int *backjump(int nb_var, int nb_val, int durete, Couple ***csp)
         {
             int iprev = i;
             i = closest_parent(parents[i], nb_var);
+            //Le mettre ici empêche les crash
+            if (i < 0)
+            {
+                free(solution);
+                free_parents(parents, nb_var);
+                return NULL;
+            }
             //IDK
             merge_arrays(parents[i], parents[iprev], nb_var, i);
             solution[iprev] = -1;
          }
-    }
-    if (i < 0)
-    {
-        free(solution);
-        free_parents(parents, nb_var);
-        //LIBERER LES PARENTS
-        return NULL;
     }
     //LIBERER LES PARENTS
     free_parents(parents, nb_var);
