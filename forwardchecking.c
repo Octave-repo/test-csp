@@ -163,6 +163,18 @@ int *forwardcheck(int nb_var, int nb_val, int durete, Couple ***csp)
     end_time = clock();
     execution_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
     printf("Temps d'éxecution: %.6f secondes\n", execution_time);
+    //La gestion de la mémoire n'est pas prise en compte dans le temps de calcul de la fonction
+    for (int a = 0 ; a < nb_var ; a++){
+        for (int b = 0 ; b < nb_var ; b++){
+            free(last_valid_definitions[a][b]);
+        }
+        free(last_valid_definitions[a]);
+        free(definitions[a]);
+        free(definitions_copy[a]);
+    }
+    free(last_valid_definitions);
+    free(definitions);
+    free(definitions_copy);
     //Si i = -1 alors pas de solution (NULL)
     if (i < 0){
         free(solution);

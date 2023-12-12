@@ -40,10 +40,10 @@ int main (int argc, char **argv)
     print_solution(solution, nb_var);
     if (solution != NULL)
         free(solution);
-    solution = timed_backjump(nb_var, nb_var, -1, csp);
+    /*solution = timed_backjump(nb_var, nb_var, -1, csp);
     print_solution(solution, nb_var);
     if (solution != NULL)
-        free(solution);
+        free(solution);*/
     free_csp(nb_var, csp);    
     /*for (int i = 0 ; i < quantite ; i ++)
     {
