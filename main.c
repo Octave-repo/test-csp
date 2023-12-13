@@ -4,7 +4,10 @@
 #include "nqueen.h"
 #include "forwardchecking.h"
 
-int main (int argc, char **argv)
+// ./csp 1 5 10 50 50
+
+//Execution du programme avec des paramètres (sans le menu)
+void menuless(int argc, char **argv)
 {
     srand(time(NULL));
     int quantite;
@@ -31,21 +34,27 @@ int main (int argc, char **argv)
     printf("- %d variables\n- %d valeurs\n- %d%% de densité\n- %d%% de dureté\n\n"
         ,nb_var, nb_val, densite, durete);
 
-    /* TEST BLOCK*/
     csp = generate_queen(nb_var);
-    //printf("Affichage du CSP\n");
-    //display_queen(csp, nb_var);
+    printf("Forward checking: \n");
     solution = forwardcheck(nb_var, nb_var, -1, csp);
-    printf("Solution:\n");
     print_solution(solution, nb_var);
     if (solution != NULL)
         free(solution);
-    /*solution = timed_backjump(nb_var, nb_var, -1, csp);
+    printf("-------------------------\n");
+    printf("Backjumping:\n");
+    solution = timed_backjump(nb_var, nb_var, -1, csp);
     print_solution(solution, nb_var);
     if (solution != NULL)
-        free(solution);*/
-    free_csp(nb_var, csp);    
-    /*for (int i = 0 ; i < quantite ; i ++)
+        free(solution);
+    printf("-------------------------\n");
+    printf("Backtracking:\n");
+    solution = backtrack(nb_var, nb_var, -1, csp);
+    print_solution(solution, nb_var);
+    if (solution != NULL)
+        free(solution);    
+    free_csp(nb_var, csp);
+    /*
+    for (int i = 0 ; i < quantite ; i ++)
     {
         csp = generate_csp(nb_var, nb_val, densite, durete);
         
@@ -59,15 +68,97 @@ int main (int argc, char **argv)
         print_solution(solution, nb_var);
         if (solution != NULL)
             free(solution);
+        printf("\nForward checking: \n");
+        solution = forwardcheck(nb_var, nb_val, durete, csp);
+        print_solution(solution, nb_var);
+        if (solution != NULL)
+            free(solution);
         free_csp(nb_var, csp);
         printf("----------------------\n");
-    }*:
-        
-    
-    /*print_solution(solution, nb_var);
-    if (solution != NULL)
-        free(solution);
-    free_csp(nb_var, csp); */
-    /* END BLOCK*/
+    }
+    */
+}
+
+
+void solve(int qte, int nb_var, int nb_val, int durete, Couple ***csp)
+{
+    int *solution;
+    for (int i = 0 ; i < qte ; i++)
+    {
+        printf("Forward checking: \n");
+        solution = forwardcheck(nb_var, nb_val, -1, csp);
+        //print_solution(solution, nb_var);
+        if (solution != NULL)
+            free(solution);
+        printf("-------------------------\n");
+        printf("Backjumping:\n");
+        solution = timed_backjump(nb_var, nb_val, -1, csp);
+        //print_solution(solution, nb_var);
+        if (solution != NULL)
+            free(solution);
+        printf("-------------------------\n");
+        printf("Backtracking:\n");
+        solution = backtrack(nb_var, nb_val, -1, csp);
+        //print_solution(solution, nb_var);
+        if (solution != NULL)
+            free(solution);
+        printf("=======================\n");    
+    }
+}
+
+
+void menu_queen(){
+    int n;
+    int qte;
+
+    printf("Nombre de reines (min 1): ");
+    scanf("\n%d", &n);
+    if (n < 1){
+        printf("Valeur incorecte, la valeur 1 sera utilisée.\n");
+    }
+    printf("Nombre de fois que le problème devra être résolu (min 1): ");
+    scanf("\n%d", &qte);
+    if (n < 1){
+        printf("Valeur incorecte, la valeur 1 sera utilisée.\n");
+    }
+    printf("\n");
+    Couple ***csp;
+    csp = generate_queen(n);
+    solve(qte, n, n, -1, csp);
+    free_csp(n, csp);
+}
+
+void menu_random_csp(){
+
+}
+
+void menu()
+{
+    int choix;
+    printf("Choisisez un problème:\n");
+    printf("\t-N-reines(1)\n");
+    printf("\t-Aléatoire(2)\n");
+    printf("\n\t-Quitter(0)\n");
+    scanf("%d", &choix);
+    switch (choix){
+        case 0:
+            return;
+            break;
+        case 1:
+            menu_queen();
+            break;
+        case 2:
+            menu_random_csp();
+            break;
+        default:
+            printf("Choix incorrect, sortie du programme;\n");
+            break;
+    }
+}
+
+int main (int argc, char **argv)
+{
+    //Permet une execution avec argument (plus rapide pour l'évaluation des temps d'éxecution )
+    (argc > 1) ? menuless(argc, argv) : menu();
     return 0;
 }
