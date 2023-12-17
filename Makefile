@@ -1,5 +1,5 @@
 CC = gcc
-#CFLAGS = -Wall -Wextra -g
+CFLAGS = -Wall -Wextra -g
 TARGET = csp
 
 SRCS = main.c generator.c backtrack.c backjumping.c nqueen.c forwardchecking.c
@@ -18,6 +18,3 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -f $(OBJS) $(TARGET)
-	
-windows:
-	$(MAKE) CROSS_COMPILE=x86_64-w64-mingw32-

@@ -12,6 +12,7 @@ void free_parents(int **parents, int size)
     free(parents);
 }
 
+//Génère la liste initiale des parents
 int **create_parents(int nb_var, Couple ***csp)
 {
     int **out = malloc(nb_var * sizeof(int*));
@@ -37,6 +38,7 @@ int **create_parents(int nb_var, Couple ***csp)
     return out;
 }
 
+//Retourne le parent le plus proche
 int closest_parent(int *parent, int nb_var)
 {
     int out = -1;
@@ -48,6 +50,7 @@ int closest_parent(int *parent, int nb_var)
     return out;
 }
 
+//Fusionne deux liste
 void merge_arrays(int *source, int *destination, int size, int n)
 {
     for (int i = 0; i < size; i++)
@@ -77,7 +80,6 @@ void merge_arrays(int *source, int *destination, int size, int n)
     }
 }
 
-//TODO ça crash en cas de 
 int *backjump(int nb_var, int nb_val, int durete, Couple ***csp)
 {
     int **parents = create_parents(nb_var, csp);
@@ -115,16 +117,15 @@ int *backjump(int nb_var, int nb_val, int durete, Couple ***csp)
                 free_parents(parents, nb_var);
                 return NULL;
             }
-            //IDK
             merge_arrays(parents[i], parents[iprev], nb_var, i);
             solution[iprev] = -1;
          }
     }
-    //LIBERER LES PARENTS
     free_parents(parents, nb_var);
     return solution;
 }
 
+//Permet d'avoir un timer de la fonction de backjumping
 int *timed_backjump(int nb_var, int nb_val, int durete, Couple ***csp)
 {
     int *out;
@@ -138,5 +139,11 @@ int *timed_backjump(int nb_var, int nb_val, int durete, Couple ***csp)
     
     execution_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
     printf("Temps d'éxecution: %.6f secondes\n", execution_time);
+    if (USEDATAFILE)
+    {
+        FILE *file = fopen(DATAFILE, "a");
+        fprintf(file,"%.6f,", execution_time);
+        fclose(file);
+    }
     return out;
 }

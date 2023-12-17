@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
+#define DATAFILE "data.csv"
+#define USEDATAFILE 0
+ 
 /*Structure d'un couple de valeur*/
 typedef struct _couple {
     int a;

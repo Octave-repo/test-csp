@@ -2,7 +2,6 @@
 #include "generator.h"
 #include "nqueen.h"
 
-
 //Les domaines de définitions sont représenté sous le forme d'un tableau de domaines de définition
 int **create_domains(int nb_var, int nb_val) {
     int **out;
@@ -17,6 +16,7 @@ int **create_domains(int nb_var, int nb_val) {
     return out;
 }
 
+//Vérifie si un domaine est vide
 int is_empty(int *domains, int size)
 {
     for (int i = 0 ; i < size ; i++)
@@ -28,6 +28,7 @@ int is_empty(int *domains, int size)
     return 1;
 }
 
+//Retourne une valeur du domaine de définition
 int val_from_domain(int *domains, int size)
 {
     for (int i = 0 ; i < size ; i++)
@@ -42,6 +43,7 @@ int val_from_domain(int *domains, int size)
     return -1;
 }
 
+//Vérifie si deux valeurs sont cohérente selon une contrainte
 int is_ok(int a, int b, Couple *contrainte, int size)
 {
     for (int j = 0; j < size; j++)
@@ -55,6 +57,7 @@ int is_ok(int a, int b, Couple *contrainte, int size)
     return 0;
 }
 
+//Supprime une valeur du domaine de définition
 int *remove_value_from_domain(int *domain, int value, int size) {
  
     for (int i = 0; i < size; i++) {
@@ -65,6 +68,7 @@ int *remove_value_from_domain(int *domain, int value, int size) {
     return domain;
 }
 
+//Révise le domaine de définition
 int **revise(int m, int n, int x, int **definitions, int nb_var, int nb_val, Couple ***csp, int size) {
     //n >= m
     //La contrainte entre n et m
@@ -76,7 +80,6 @@ int **revise(int m, int n, int x, int **definitions, int nb_var, int nb_val, Cou
     if (!contrainte)
         return definitions;
         
-    //Pour a ∈ Dm
     for (int i = 0 ; i < nb_val ; i++)
     {
         if (!is_ok(x, definition_m[i], contrainte, size)) {
@@ -88,23 +91,12 @@ int **revise(int m, int n, int x, int **definitions, int nb_var, int nb_val, Cou
     return definitions;
 }
 
+//Fait une copie des domaines sources vers les domaines destination
 void copy_domain(int **source, int **destination, int nb_var, int nb_val) {
     for (int i = 0; i < nb_var; i++) {
         for (int j = 0; j < nb_val; j++) {
             destination[i][j] = source[i][j];
         }
-    }
-}
-
-void copy_domain_part(int *source, int *destination, int nb_var, int nb_val){
-    for (int j = 0; j < nb_val; j++) {
-        destination[j] = source[j];
-    }
-}
-
-void restore_domains(int **source, int **destination, int start, int end, int nb_var, int nb_val) {
-    for (int k = start; k < end; k++) {
-        copy_domain_part(source[k], destination[k], nb_var, nb_val);
     }
 }
 
@@ -116,8 +108,11 @@ int *forwardcheck(int nb_var, int nb_val, int durete, Couple ***csp)
     double execution_time;
 
     int size = (durete >= 0) ? val_per_constraints(nb_val, durete) : (nb_var * nb_var);
+    //Domaines de définition
     int **definitions = create_domains(nb_var, nb_val);
+    //Une copie du domaine de définition (peut être pas nécessaire?)
     int **definitions_copy = create_domains(nb_var, nb_val);
+    //Liste des derniers domaines de définitions valides
     int ***last_valid_definitions = malloc(nb_var * sizeof(int**));
     for (int a = 0 ; a < nb_var ; a++){
         last_valid_definitions[a] = create_domains(nb_var, nb_val);
@@ -154,6 +149,9 @@ int *forwardcheck(int nb_var, int nb_val, int durete, Couple ***csp)
         }
         if (!ok) {
             i--;
+            /*Si on recule, on récupère le dernier domaine de définition valide au temps i
+            La condition permet d'empecher de lire une valeur hors du tableau
+            (i < 0 si il n y a pas de solution)*/
             if (i >= 0)
                 copy_domain(last_valid_definitions[i], definitions, nb_var, nb_val);
         } else {
@@ -163,6 +161,12 @@ int *forwardcheck(int nb_var, int nb_val, int durete, Couple ***csp)
     end_time = clock();
     execution_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
     printf("Temps d'éxecution: %.6f secondes\n", execution_time);
+    if (USEDATAFILE)
+    {
+        FILE *file = fopen(DATAFILE, "a");
+        fprintf(file,"%.6f,", execution_time);
+        fclose(file);
+    }
     //La gestion de la mémoire n'est pas prise en compte dans le temps de calcul de la fonction
     for (int a = 0 ; a < nb_var ; a++){
         for (int b = 0 ; b < nb_var ; b++){

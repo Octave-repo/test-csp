@@ -39,7 +39,7 @@ int coherence_check(int n, int nb_var, int *solution, int size, Couple ***csp)
 
             if (!constraint_satisfied)
             {
-                ok = 0; // Constraint not satisfied
+                ok = 0;
                 break;
             }
         }
@@ -97,6 +97,13 @@ int *backtrack(int nb_var, int nb_val, int durete, Couple ***csp)
 
     execution_time = (double)(end_time - start_time) / CLOCKS_PER_SEC;
     printf("Temps d'éxecution: %.6f secondes\n", execution_time);
+    //Log les temps d'éxecution dans un fichier
+    if (USEDATAFILE)
+    {
+        FILE *file = fopen(DATAFILE, "a");
+        fprintf(file,"%.6f,", execution_time);
+        fclose(file);
+    }
     if (ok)
         return solution;
     else

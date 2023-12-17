@@ -1,4 +1,5 @@
 #include "nqueen.h"
+
 void display_queen(Couple ***csp, int n)
 {
     int size = n *n;
